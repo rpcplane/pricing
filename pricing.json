@@ -1,0 +1,135 @@
+{
+  "schema_version": "1",
+  "updated_at": "2026-05-14",
+  "methodology": "Pay-as-you-go / overage rates only. Subscription included-quota tiers are excluded. Best non-enterprise published rate is used where tiers differ. Update quarterly — see each provider's pricing_url and method_credits_source.",
+  "providers": {
+    "helius": {
+      "display_name": "Helius",
+      "url_patterns": ["*.helius-rpc.com", "mainnet.helius-rpc.com"],
+      "model": "credits",
+      "overage_usd_per_million_credits": 5.0,
+      "pricing_url": "https://www.helius.dev/pricing",
+      "method_credits_source": "https://www.helius.dev/pricing",
+      "method_credits": {
+        "default": 1,
+        "getProgramAccounts": 10,
+        "getBlock": 10,
+        "getTransaction": 10,
+        "getConfirmedBlock": 10,
+        "getConfirmedTransaction": 10,
+        "getSignaturesForAddress": 10,
+        "getBlocks": 10,
+        "getBlocksWithLimit": 10,
+        "getInflationReward": 10,
+        "getAsset": 10,
+        "getAssetProof": 10,
+        "getAssetsByOwner": 10,
+        "getAssetsByGroup": 10,
+        "getAssetsByCreator": 10,
+        "getAssetsByAuthority": 10,
+        "searchAssets": 10,
+        "getTokenAccounts": 10,
+        "getNftEditions": 10
+      },
+      "updated_at": "2026-05-14",
+      "notes": "Standard calls = 1 credit, archival + DAS = 10 credits. Helius-native APIs (enhancedTransactions, mintlist) cost 100 credits each but are not standard JSON-RPC. $5/M applies across all paid tiers."
+    },
+
+    "quicknode": {
+      "display_name": "QuickNode",
+      "url_patterns": [
+        "*.solana-mainnet.quiknode.pro",
+        "*.solana-mainnet.discover.quiknode.pro"
+      ],
+      "model": "credits",
+      "overage_usd_per_million_credits": 0.50,
+      "method_credits": {
+        "default": 30,
+        "getAsset": 60,
+        "getAssetProof": 60,
+        "getAssetsByOwner": 60,
+        "getAssetsByGroup": 60,
+        "getAssetsByCreator": 60,
+        "getAssetsByAuthority": 60,
+        "searchAssets": 60,
+        "getLargestAccounts": 120,
+        "getSupply": 120,
+        "getTokenLargestAccounts": 120
+      },
+      "pricing_url": "https://www.quicknode.com/pricing",
+      "method_credits_source": "https://www.quicknode.com/api-credits/solana",
+      "updated_at": "2026-05-14",
+      "notes": "All standard Solana methods = 30 credits, including history (getBlock, getTransaction). No archival premium. DAS (getAsset*) = 2x. Large scans (getLargestAccounts, getSupply) = 4x. Business tier overage rate used ($0.50/M); Build tier is $0.62/M."
+    },
+
+    "triton": {
+      "display_name": "Triton One",
+      "url_patterns": ["*.rpcpool.com", "*.triton.one"],
+      "model": "requests_plus_bandwidth",
+      "overage_usd_per_million_requests": 10.0,
+      "bandwidth_usd_per_gb": 0.08,
+      "method_credits": {
+        "default": 1,
+        "getAsset": 5,
+        "getAssetProof": 5,
+        "getAssetsByOwner": 5,
+        "getAssetsByGroup": 5,
+        "getAssetsByCreator": 5,
+        "getAssetsByAuthority": 5,
+        "searchAssets": 5
+      },
+      "pricing_url": "https://triton.one/pricing",
+      "method_credits_source": "https://triton.one/pricing",
+      "updated_at": "2026-05-14",
+      "notes": "Standard RPC, ledger/history queries, and indexed account calls all $10/M — no premium for getBlock or getTransaction. Metaplex DAS (Photon API) = $50/M = 5x. Metis historical API = $80/M but not modeled here. Bandwidth ($0.08/GB) stacks on top of per-call charge for every response. Dominant cost for getBlock which can return 100KB–2MB payloads. Streaming (gRPC/WebSocket) billed on bandwidth only."
+    },
+
+    "alchemy": {
+      "display_name": "Alchemy",
+      "url_patterns": ["*.solana-mainnet.g.alchemy.com"],
+      "model": "compute_units",
+      "overage_usd_per_million_cu": 0.45,
+      "method_credits": {
+        "default": 10,
+        "getTransaction": 40,
+        "getBlock": 40,
+        "getConfirmedBlock": 40,
+        "getConfirmedTransaction": 40,
+        "getSignaturesForAddress": 40,
+        "getBlocks": 40,
+        "getBlocksWithLimit": 40,
+        "sendTransaction": 20,
+        "simulateTransaction": 20,
+        "getProgramAccounts": 20,
+        "getMultipleAccounts": 20,
+        "getSlot": 20,
+        "getBlockHeight": 20,
+        "getLatestBlockhash": 20,
+        "getEpochInfo": 20,
+        "getInflationReward": 20
+      },
+      "pricing_url": "https://www.alchemy.com/pricing",
+      "method_credits_source": "https://www.alchemy.com/docs/reference/compute-units",
+      "updated_at": "2026-05-14",
+      "notes": "CU weights need verification — Solana-specific docs page returned 404, values inferred from general compute-units table. Rate drops to $0.40/M CU beyond 300M CU/month. gRPC streaming billed at $80/TB. PAYG plan starts from 300 RPS."
+    },
+
+    "chainstack": {
+      "display_name": "Chainstack",
+      "url_patterns": [
+        "*.solana.core.chainstack.com",
+        "*.solana-mainnet.core.chainstack.com"
+      ],
+      "model": "request_units",
+      "overage_usd_per_million_ru": 5.0,
+      "method_credits": {
+        "default": 1,
+        "archive": 2
+      },
+      "pricing_url": "https://chainstack.com/pricing/",
+      "method_credits_source": "https://chainstack.com/pricing/",
+      "updated_at": "2026-05-14",
+      "notes": "Enterprise tier rate ($5/M RU) used; Developer tier is $20/M. Only differentiation is archive node = 2 RU vs standard = 1 RU. No Solana per-method breakdown publicly documented. 'archive' key is a pseudo-method covering any call routed to an archive node."
+    }
+  }
+}
