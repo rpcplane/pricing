@@ -86,9 +86,10 @@ For each provider:
 3. Update `updated_at` on the provider entry and the top-level `updated_at`.
 4. Open a PR — changes auto-deploy to `pricing.rpcplane.dev` on merge.
 
-The rendered site is `index.html`, served with `noindex`. This subdomain exists to serve JSON, not to
-rank: the searchable pricing pages are on `rpcplane.dev` and `docs.rpcplane.dev`, and a third indexed
-copy would just split the signal.
+The rendered site is `index.html`. It is aimed at a different query than the two `/provider-pricing/`
+pages — those own "compare provider pricing" and "price per method"; this one owns the dataset itself,
+for someone who wants Solana RPC pricing as data to fetch rather than a table to read. Keep it that
+way: do not paste the rate tables into it, or all three pages end up competing.
 
 ## Contributing
 

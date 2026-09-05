@@ -1,6 +1,6 @@
-# pricing.rpcplane.dev serves one machine-readable JSON file.
-# Crawling is allowed so the noindex on index.html is actually seen —
-# a blanket Disallow would leave already-indexed URLs stuck in place.
-# The searchable pricing pages live on rpcplane.dev and docs.rpcplane.dev.
+# pricing.rpcplane.dev serves one machine-readable JSON file, plus a page
+# describing it. Both are crawlable and indexable.
+# The rate tables people read live on rpcplane.dev and docs.rpcplane.dev;
+# this host owns the dataset itself.
 User-agent: *
 Allow: /

@@ -3,12 +3,36 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>RPC Plane pricing data</title>
-    <!-- This subdomain serves data, not content. The pages meant to rank are on
-         rpcplane.dev and docs.rpcplane.dev; a third indexed copy of the same
-         tables would only split the signal. -->
-    <meta name="robots" content="noindex, follow" />
-    <meta name="description" content="Machine-readable Solana RPC provider pricing data served as JSON at pricing.rpcplane.dev." />
+    <title>Solana RPC Pricing Data — Free JSON Dataset</title>
+    <!-- Indexable, but deliberately aimed at a different query than the two
+         /provider-pricing/ pages. Those own "compare provider pricing" and
+         "price per method"; this owns the dataset itself — someone looking for
+         Solana RPC pricing as data they can fetch, not a table to read. -->
+    <meta name="description" content="Free, open JSON dataset of Solana RPC provider pricing — per-method credit and compute-unit weights for Helius, QuickNode, Triton One, Alchemy and Chainstack. One fetch, no key." />
+    <link rel="canonical" href="https://pricing.rpcplane.dev/" />
+    <meta property="og:title" content="Solana RPC Pricing Data — Free JSON Dataset" />
+    <meta property="og:description" content="Per-method Solana RPC pricing for five providers as one machine-readable JSON file. Free, open, no API key." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://pricing.rpcplane.dev/" />
+    <meta name="twitter:card" content="summary" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Dataset",
+      "name": "Solana RPC provider pricing",
+      "description": "Per-method pricing for Solana RPC providers: credit and compute-unit weights, overage rates, and the source URL and date behind every figure. Covers Helius, QuickNode, Triton One, Alchemy and Chainstack.",
+      "url": "https://pricing.rpcplane.dev/",
+      "license": "https://github.com/rpcplane/pricing",
+      "isAccessibleForFree": true,
+      "keywords": ["Solana", "RPC", "pricing", "compute units", "credits", "JSON-RPC"],
+      "creator": { "@type": "Organization", "name": "RPC Plane", "url": "https://rpcplane.dev" },
+      "distribution": {
+        "@type": "DataDownload",
+        "encodingFormat": "application/json",
+        "contentUrl": "https://pricing.rpcplane.dev/pricing.json"
+      }
+    }
+    </script>
     <style>
       :root { color-scheme: dark; }
       body {
@@ -34,10 +58,10 @@
   </head>
   <body>
     <main>
-      <h1>RPC Plane pricing data</h1>
+      <h1>Solana RPC pricing data</h1>
       <p class="lede">
-        Per-method pricing for Solana RPC providers, as one machine-readable JSON document.
-        Public, versioned, and free to use.
+        Per-method pricing for five Solana RPC providers, as one machine-readable JSON document.
+        Free, open, no API key — fetch it and diff it.
       </p>
 
       <h2>The file</h2>
@@ -60,9 +84,15 @@
         <li><a href="https://docs.rpcplane.dev/provider-pricing/">Per-method rate reference</a> — the full weight tables with sources.</li>
       </ul>
 
-      <h2>What this is not</h2>
+      <h2>Why it exists</h2>
       <p class="note">
-        This data is a reference, not a routing input. Cost-aware routing is on hold — the
+        Provider pricing is published as marketing pages, not as data — different units per vendor
+        (credits, compute units, request units, per-request plus bandwidth), and per-method weights
+        buried in separate docs. This normalises all of it into one shape so the providers are
+        actually comparable. Every figure carries the source URL and the date it was checked.
+      </p>
+      <p class="note" style="margin-top:1rem">
+        It is a reference, not a routing input. Cost-aware routing is on hold — the
         <a href="https://github.com/rpcplane/rpc-plane"><code>rpc-plane</code></a> binary does not
         fetch this file and does not route on cost.
       </p>
