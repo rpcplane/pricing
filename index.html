@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>RPC Plane pricing data</title>
+    <!-- This subdomain serves data, not content. The pages meant to rank are on
+         rpcplane.dev and docs.rpcplane.dev; a third indexed copy of the same
+         tables would only split the signal. -->
+    <meta name="robots" content="noindex, follow" />
+    <meta name="description" content="Machine-readable Solana RPC provider pricing data served as JSON at pricing.rpcplane.dev." />
+    <style>
+      :root { color-scheme: dark; }
+      body {
+        margin: 0; padding: 3rem 1.5rem; background: #09090b; color: #d4d4d8;
+        font: 15px/1.65 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+      }
+      main { max-width: 44rem; margin: 0 auto; }
+      h1 { font-size: 1.5rem; color: #fafafa; margin: 0 0 .5rem; letter-spacing: -.01em; }
+      .lede { color: #a1a1aa; margin: 0 0 2rem; }
+      h2 { font-size: .8rem; text-transform: uppercase; letter-spacing: .08em;
+           color: #71717a; margin: 2.5rem 0 .75rem; font-weight: 600; }
+      a { color: #a5b4fc; text-decoration: underline; text-underline-offset: 2px; }
+      a:hover { color: #c7d2fe; }
+      code, .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .9em; }
+      .file { display: inline-block; background: #18181b; border: 1px solid #27272a;
+              border-radius: 6px; padding: .55rem .9rem; margin: 0 .5rem .5rem 0; }
+      ul { padding-left: 1.1rem; margin: 0; }
+      li { margin-bottom: .4rem; }
+      .note { border-left: 2px solid #3f3f46; padding-left: 1rem; color: #a1a1aa; margin: 0; }
+      footer { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid #27272a;
+               color: #52525b; font-size: .85rem; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>RPC Plane pricing data</h1>
+      <p class="lede">
+        Per-method pricing for Solana RPC providers, as one machine-readable JSON document.
+        Public, versioned, and free to use.
+      </p>
+
+      <h2>The file</h2>
+      <p><a class="file mono" href="/pricing.json">/pricing.json</a></p>
+      <p class="note">
+        Schema v1. Covers Helius, QuickNode, Triton One, Alchemy and Chainstack — credit and
+        compute-unit weights per method, overage rates, and the source URL and date behind every
+        figure. Pay-as-you-go rates only; subscription quotas are not modelled.
+      </p>
+
+      <h2>Reading it</h2>
+      <p>
+        Full schema, the effective-cost formula, and the quarterly update process are in the
+        <a href="https://github.com/rpcplane/pricing">repository README</a>.
+      </p>
+
+      <h2>If you want the tables, not the JSON</h2>
+      <ul>
+        <li><a href="https://rpcplane.dev/provider-pricing/">Cost calculator</a> — enter your call mix, compare providers side by side.</li>
+        <li><a href="https://docs.rpcplane.dev/provider-pricing/">Per-method rate reference</a> — the full weight tables with sources.</li>
+      </ul>
+
+      <h2>What this is not</h2>
+      <p class="note">
+        This data is a reference, not a routing input. Cost-aware routing is on hold — the
+        <a href="https://github.com/rpcplane/rpc-plane"><code>rpc-plane</code></a> binary does not
+        fetch this file and does not route on cost.
+      </p>
+
+      <footer>
+        A component of <a href="https://rpcplane.dev">RPC Plane</a> ·
+        <a href="https://github.com/rpcplane/pricing">Source</a> ·
+        Corrections welcome as pull requests.
+      </footer>
+    </main>
+  </body>
+</html>
