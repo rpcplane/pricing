@@ -1,8 +1,49 @@
 {
   "schema_version": "1",
-  "updated_at": "2026-09-05",
-  "methodology": "Pay-as-you-go / overage rates only. Subscription included-quota tiers are excluded. Best non-enterprise published rate is used where tiers differ. Update quarterly \u2014 see each provider's pricing_url and method_credits_source.",
+  "updated_at": "2026-09-06",
+  "methodology": "Pay-as-you-go / overage rates only. Subscription included-quota tiers are excluded. Best non-enterprise published rate is used where tiers differ. Update quarterly — see each provider's pricing_url and method_credits_source. A method listed in a provider's unpriced_methods has no rate in this file — either the provider does not serve it or does not publish a price. Do not fall back to `default` for those; there is no answer to fall back to.",
   "providers": {
+    "alchemy": {
+      "display_name": "Alchemy",
+      "url_patterns": [
+        "*.solana-mainnet.g.alchemy.com"
+      ],
+      "model": "compute_units",
+      "overage_usd_per_million_cu": 0.45,
+      "method_credits": {
+        "default": 10,
+        "getTransaction": 40,
+        "getBlock": 40,
+        "getConfirmedBlock": 40,
+        "getConfirmedTransaction": 40,
+        "getSignaturesForAddress": 40,
+        "getBlocks": 40,
+        "getBlocksWithLimit": 40,
+        "sendTransaction": 20,
+        "simulateTransaction": 20,
+        "getProgramAccounts": 20,
+        "getMultipleAccounts": 20,
+        "getSlot": 20,
+        "getBlockHeight": 20,
+        "getLatestBlockhash": 20,
+        "getEpochInfo": 20,
+        "getInflationReward": 20
+      },
+      "unpriced_methods": [
+        "getAsset",
+        "getAssetProof",
+        "getAssetsByAuthority",
+        "getAssetsByCreator",
+        "getAssetsByGroup",
+        "getAssetsByOwner",
+        "getNftEditions",
+        "searchAssets"
+      ],
+      "pricing_url": "https://www.alchemy.com/pricing",
+      "method_credits_source": "https://www.alchemy.com/docs/reference/compute-unit-costs",
+      "updated_at": "2026-09-05",
+      "notes": "CU weights confirmed against Alchemy's published Solana JSON-RPC table on 2026-09-05 — the previously inferred values were correct (standard 10, sendTransaction/getProgramAccounts/getSlot 20, history 40). Rate drops to $0.40/M CU beyond 300M CU/month. Free tier is 30M CU/month at 25 req/s — the largest here. PAYG plan starts from 300 RPS. Alchemy publishes no Solana DAS rate; the compute-unit table does not cover the DAS methods."
+    },
     "helius": {
       "display_name": "Helius",
       "url_patterns": [
@@ -35,7 +76,110 @@
         "getNftEditions": 10
       },
       "updated_at": "2026-09-05",
-      "notes": "Standard calls = 1 credit, archival + DAS = 10 credits. sendTransaction is a standard call at 1 credit \u2014 it is not free. Helius-native APIs (enhancedTransactions, mintlist) cost 100 credits each but are not standard JSON-RPC. $5/M holds across paid tiers: Developer $49/10M, Business $499/100M, Professional $999/200M. Free tier is 1M credits/month at 10 req/s (1 sendTransaction/s)."
+      "notes": "Standard calls = 1 credit, archival + DAS = 10 credits. sendTransaction is a standard call at 1 credit — it is not free. Helius-native APIs (enhancedTransactions, mintlist) cost 100 credits each but are not standard JSON-RPC. $5/M holds across paid tiers: Developer $49/10M, Business $499/100M, Professional $999/200M. Free tier is 1M credits/month at 10 req/s (1 sendTransaction/s)."
+    },
+    "drpc": {
+      "display_name": "dRPC",
+      "url_patterns": [
+        "*.drpc.org",
+        "lb.drpc.org"
+      ],
+      "model": "compute_units",
+      "overage_usd_per_million_cu": 0.3,
+      "method_credits": {
+        "default": 20
+      },
+      "unpriced_methods": [
+        "getAsset",
+        "getAssetProof",
+        "getAssetsByAuthority",
+        "getAssetsByCreator",
+        "getAssetsByGroup",
+        "getAssetsByOwner",
+        "getNftEditions",
+        "searchAssets"
+      ],
+      "pricing_url": "https://drpc.org/pricing",
+      "method_credits_source": "https://drpc.org/docs/pricing/compute-units",
+      "updated_at": "2026-09-06",
+      "notes": "Flat 20 CU for every method on every chain since 2025-06-02, when dRPC replaced its per-method schedule (weights had ranged 10–60 CU). At $0.30/M CU that is $6.00 per million calls for every method, including history — the cheapest history read and cheapest getProgramAccounts of any provider in this file. Does NOT serve Metaplex DAS (getAsset*, searchAssets), so DAS-heavy workloads cannot be costed on dRPC at all. Free tier is 210M CU per 30 days (~10.5M calls) but is served over dRPC's public node pool, which is slower and less reliable than paid endpoints. Volume discounts exist above the standard rate but are not published. dRPC does not serve Metaplex DAS on Solana — the methods are absent from its Solana API."
+    },
+    "onfinality": {
+      "display_name": "OnFinality",
+      "url_patterns": [
+        "*.api.onfinality.io"
+      ],
+      "model": "request_units",
+      "overage_usd_per_million_ru": 3.75,
+      "method_credits": {
+        "default": 2
+      },
+      "unpriced_methods": [
+        "getAsset",
+        "getAssetProof",
+        "getAssetsByAuthority",
+        "getAssetsByCreator",
+        "getAssetsByGroup",
+        "getAssetsByOwner",
+        "getNftEditions",
+        "searchAssets",
+        "sendTransaction"
+      ],
+      "pricing_url": "https://onfinality.io/en/pricing",
+      "method_credits_source": "https://documentation.onfinality.io/support/solana",
+      "updated_at": "2026-09-06",
+      "notes": "Uniform 2 RU for every Solana method — OnFinality's published table lists the same weight against all 50+ HTTP and WebSocket methods, archival reads included. Accelerate tier rate used ($3.75/M RU, $249/mo) as the best non-enterprise rate, giving $7.50/M calls; Growth $49 is $6.00/M RU ($12.00/M calls) and Ultimate is quoted per contract. sendTransaction is NOT in the published Solana method table — confirm write support before routing writes, or restrict with a methods allowlist. Free Developer tier is 400K RU/day (~200K calls/day) at 40 RU/s — note the allowance is daily, not monthly. OnFinality's published Solana method table contains no DAS methods, and no sendTransaction."
+    },
+    "chainstack": {
+      "display_name": "Chainstack",
+      "url_patterns": [
+        "*.solana.core.chainstack.com",
+        "*.solana-mainnet.core.chainstack.com"
+      ],
+      "model": "request_units",
+      "overage_usd_per_million_ru": 10.0,
+      "method_credits": {
+        "default": 1,
+        "archive": 2
+      },
+      "unpriced_methods": [
+        "getAsset",
+        "getAssetProof",
+        "getAssetsByAuthority",
+        "getAssetsByCreator",
+        "getAssetsByGroup",
+        "getAssetsByOwner",
+        "getNftEditions",
+        "searchAssets"
+      ],
+      "pricing_url": "https://chainstack.com/pricing/",
+      "method_credits_source": "https://docs.chainstack.com/docs/request-units",
+      "updated_at": "2026-09-06",
+      "notes": "Business tier overage rate used ($10/M RU) — the best non-enterprise rate, per this file's methodology. Previously this entry used the Enterprise rate ($5/M RU, from $990/mo), which the methodology excludes; corrected 2026-09-06. Full ladder: Developer $0 (3M RU, 25 RPS, $20/M), Growth $49 (20M, 250 RPS, $15/M), Pro $199 (80M, 400 RPS, $12.50/M), Business $499 (200M, 600 RPS, $10/M), Enterprise $990+ (400M+, unlimited, $5/M). No Solana per-method RU weighting — every method is 1 RU. 'archive' is a pseudo-method: on Solana it applies to exactly eight methods (getTransaction, getBlock, getBlockTime, getBlocks, getBlocksWithLimit, getSignaturesForAddress, getFirstAvailableBlock, getSignatureStatuses) and only when the slot is below firstAvailable + 5,000, so history near the chain tip bills at 1 RU. getSignaturesForAddress and getFirstAvailableBlock are always archive. Free tier 3M RU/mo at 25 RPS. Per-method RPS caps below plan level: getSupply 2 (paid only), getTokenAccountsByOwner 80, getBlock 400, getBlockTime/getBlocks/getBlocksWithLimit 500. Chainstack does not offer a Metaplex DAS API on Solana."
+    },
+    "triton": {
+      "display_name": "Triton One",
+      "url_patterns": [
+        "*.rpcpool.com",
+        "*.triton.one"
+      ],
+      "model": "requests_plus_bandwidth",
+      "overage_usd_per_million_requests": 10.0,
+      "bandwidth_usd_per_gb": 0.08,
+      "method_credits": {
+        "default": 1,
+        "getAsset": 5,
+        "getAssetProof": 5,
+        "getAssetsByOwner": 5,
+        "getAssetsByGroup": 5,
+        "getAssetsByCreator": 5,
+        "getAssetsByAuthority": 5,
+        "searchAssets": 5
+      },
+      "pricing_url": "https://triton.one/pricing",
+      "method_credits_source": "https://triton.one/pricing",
+      "updated_at": "2026-09-05",
+      "notes": "Standard RPC, ledger/history queries, and indexed account calls all $10/M — no premium for getBlock or getTransaction. Metaplex DAS (Photon API) = $50/M = 5x. Metis historical API = $80/M but not modeled here. Bandwidth ($0.08/GB) stacks on top of per-call charge for every response. Dominant cost for getBlock which can return 100KB–2MB payloads. Streaming (gRPC/WebSocket) billed on bandwidth only. Requires a $125 prepaid deposit in stablecoins — non-refundable, valid 12 months; there is no free trial documented."
     },
     "quicknode": {
       "display_name": "QuickNode",
@@ -62,78 +206,6 @@
       "method_credits_source": "https://www.quicknode.com/api-credits/solana",
       "updated_at": "2026-09-05",
       "notes": "All standard Solana methods = 30 credits, including history (getBlock, getTransaction). No archival premium. DAS (getAsset*) = 2x. Large scans (getLargestAccounts, getSupply) = 4x. Business tier overage rate used ($0.50/M); Build tier is $0.62/M. Free trial is 10M credits at 15 req/s with no overage."
-    },
-    "triton": {
-      "display_name": "Triton One",
-      "url_patterns": [
-        "*.rpcpool.com",
-        "*.triton.one"
-      ],
-      "model": "requests_plus_bandwidth",
-      "overage_usd_per_million_requests": 10.0,
-      "bandwidth_usd_per_gb": 0.08,
-      "method_credits": {
-        "default": 1,
-        "getAsset": 5,
-        "getAssetProof": 5,
-        "getAssetsByOwner": 5,
-        "getAssetsByGroup": 5,
-        "getAssetsByCreator": 5,
-        "getAssetsByAuthority": 5,
-        "searchAssets": 5
-      },
-      "pricing_url": "https://triton.one/pricing",
-      "method_credits_source": "https://triton.one/pricing",
-      "updated_at": "2026-09-05",
-      "notes": "Standard RPC, ledger/history queries, and indexed account calls all $10/M \u2014 no premium for getBlock or getTransaction. Metaplex DAS (Photon API) = $50/M = 5x. Metis historical API = $80/M but not modeled here. Bandwidth ($0.08/GB) stacks on top of per-call charge for every response. Dominant cost for getBlock which can return 100KB\u20132MB payloads. Streaming (gRPC/WebSocket) billed on bandwidth only. Requires a $125 prepaid deposit in stablecoins \u2014 non-refundable, valid 12 months; there is no free trial documented."
-    },
-    "alchemy": {
-      "display_name": "Alchemy",
-      "url_patterns": [
-        "*.solana-mainnet.g.alchemy.com"
-      ],
-      "model": "compute_units",
-      "overage_usd_per_million_cu": 0.45,
-      "method_credits": {
-        "default": 10,
-        "getTransaction": 40,
-        "getBlock": 40,
-        "getConfirmedBlock": 40,
-        "getConfirmedTransaction": 40,
-        "getSignaturesForAddress": 40,
-        "getBlocks": 40,
-        "getBlocksWithLimit": 40,
-        "sendTransaction": 20,
-        "simulateTransaction": 20,
-        "getProgramAccounts": 20,
-        "getMultipleAccounts": 20,
-        "getSlot": 20,
-        "getBlockHeight": 20,
-        "getLatestBlockhash": 20,
-        "getEpochInfo": 20,
-        "getInflationReward": 20
-      },
-      "pricing_url": "https://www.alchemy.com/pricing",
-      "method_credits_source": "https://www.alchemy.com/docs/reference/compute-unit-costs",
-      "updated_at": "2026-09-05",
-      "notes": "CU weights confirmed against Alchemy's published Solana JSON-RPC table on 2026-09-05 \u2014 the previously inferred values were correct (standard 10, sendTransaction/getProgramAccounts/getSlot 20, history 40). Rate drops to $0.40/M CU beyond 300M CU/month. Free tier is 30M CU/month at 25 req/s \u2014 the largest here. PAYG plan starts from 300 RPS."
-    },
-    "chainstack": {
-      "display_name": "Chainstack",
-      "url_patterns": [
-        "*.solana.core.chainstack.com",
-        "*.solana-mainnet.core.chainstack.com"
-      ],
-      "model": "request_units",
-      "overage_usd_per_million_ru": 5.0,
-      "method_credits": {
-        "default": 1,
-        "archive": 2
-      },
-      "pricing_url": "https://chainstack.com/pricing/",
-      "method_credits_source": "https://chainstack.com/pricing/",
-      "updated_at": "2026-05-14",
-      "notes": "Enterprise tier rate ($5/M RU) used; Developer tier is $20/M. Only differentiation is archive node = 2 RU vs standard = 1 RU. No Solana per-method breakdown publicly documented. 'archive' key is a pseudo-method covering any call routed to an archive node."
     }
   }
 }
