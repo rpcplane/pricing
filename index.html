@@ -8,10 +8,10 @@
          /provider-pricing/ pages. Those own "compare provider pricing" and
          "price per method"; this owns the dataset itself — someone looking for
          Solana RPC pricing as data they can fetch, not a table to read. -->
-    <meta name="description" content="Free, open JSON dataset of Solana RPC provider pricing — per-method credit and compute-unit weights for Helius, QuickNode, Triton One, Alchemy and Chainstack. One fetch, no key." />
+    <meta name="description" content="Free, open JSON dataset of Solana RPC provider pricing — per-method credit, compute-unit and request-unit weights for Alchemy, Helius, dRPC, OnFinality, Chainstack, Triton One and QuickNode. One fetch, no key." />
     <link rel="canonical" href="https://pricing.rpcplane.dev/" />
     <meta property="og:title" content="Solana RPC Pricing Data — Free JSON Dataset" />
-    <meta property="og:description" content="Per-method Solana RPC pricing for five providers as one machine-readable JSON file. Free, open, no API key." />
+    <meta property="og:description" content="Per-method Solana RPC pricing for seven providers as one machine-readable JSON file. Free, open, no API key." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://pricing.rpcplane.dev/" />
     <meta name="twitter:card" content="summary" />
@@ -20,7 +20,7 @@
       "@context": "https://schema.org",
       "@type": "Dataset",
       "name": "Solana RPC provider pricing",
-      "description": "Per-method pricing for Solana RPC providers: credit and compute-unit weights, overage rates, and the source URL and date behind every figure. Covers Helius, QuickNode, Triton One, Alchemy and Chainstack.",
+      "description": "Per-method pricing for Solana RPC providers: credit and compute-unit weights, overage rates, and the source URL and date behind every figure. Covers Alchemy, Helius, dRPC, OnFinality, Chainstack, Triton One and QuickNode.",
       "url": "https://pricing.rpcplane.dev/",
       "license": "https://github.com/rpcplane/pricing",
       "isAccessibleForFree": true,
@@ -60,14 +60,14 @@
     <main>
       <h1>Solana RPC pricing data</h1>
       <p class="lede">
-        Per-method pricing for five Solana RPC providers, as one machine-readable JSON document.
+        Per-method pricing for seven Solana RPC providers, as one machine-readable JSON document.
         Free, open, no API key — fetch it and diff it.
       </p>
 
       <h2>The file</h2>
       <p><a class="file mono" href="/pricing.json">/pricing.json</a></p>
       <p class="note">
-        Schema v1. Covers Helius, QuickNode, Triton One, Alchemy and Chainstack — credit and
+        Schema v1. Covers Alchemy, Helius, dRPC, OnFinality, Chainstack, Triton One and QuickNode — credit and
         compute-unit weights per method, overage rates, and the source URL and date behind every
         figure. Pay-as-you-go rates only; subscription quotas are not modelled.
       </p>
