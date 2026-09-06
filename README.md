@@ -47,17 +47,32 @@ cost_usd = (method_credits[method] / 1_000_000) × overage_usd_per_million_<unit
 
 For `requests_plus_bandwidth` providers, add `response_bytes / 1_073_741_824 × bandwidth_usd_per_gb` per call.
 
+**Check `unpriced_methods` before falling back to `default`.** A method listed there has no rate in
+this file — either the provider does not serve it, or it does not publish a price. Four providers list
+the Metaplex DAS methods, and OnFinality also lists `sendTransaction`. Treating those as `default`
+would report a confident price for a call the provider cannot bill you for.
+
 ## Included providers
 
 | Provider | Model | $/M std call | $/M getBlock | $/M DAS | Source date |
 |---|---|---|---|---|---|
-| Helius | credits | $5.00 | $50.00 (10×) | $50.00 (10×) | 2026-09-05 |
-| QuickNode | credits | $15.00 | $15.00 (no premium) | $30.00 (2×) | 2026-09-05 |
-| Triton One | req + bandwidth | $10.00 + BW | $10.00 + BW | $50.00 + BW | 2026-09-05 |
 | Alchemy | compute units | $4.50 | $18.00 (4×) | — | 2026-09-05 |
-| Chainstack | request units | $5.00 | $10.00 (archive 2×) | — | 2026-05-14 |
+| Helius | credits | $5.00 | $50.00 (10×) | $50.00 (10×) | 2026-09-05 |
+| dRPC | compute units | $6.00 | $6.00 (no premium) | — | 2026-09-06 |
+| OnFinality | request units | $7.50 | $7.50 (no premium) | — | 2026-09-06 |
+| Chainstack | request units | $10.00 | $10.00–$20.00 (archive 2×) | — | 2026-09-06 |
+| Triton One | req + bandwidth | $10.00 + BW | $10.00 + BW | $50.00 + BW | 2026-09-05 |
+| QuickNode | credits | $15.00 | $15.00 (no premium) | $30.00 (2×) | 2026-09-05 |
 
 BW = $0.08/GB response bandwidth (Triton).
+
+Chainstack's `getBlock` is a range because its Solana archive rule is slot-based: 1 RU near the chain
+tip, 2 RU only below `firstAvailable + 5,000`. Live indexing pays the lower figure; backfill pays the
+higher one.
+
+**Rates are each provider's best published non-enterprise rate**, per the `methodology` field. That
+is not always the entry tier: Chainstack's $10.00 is Business ($499/mo), not Growth ($49, $15.00/M),
+and QuickNode's $15.00 is Business, not Build. Each provider's `notes` carries its full tier ladder.
 
 Alchemy's CU weights are no longer marked unverified: Alchemy now publishes a Solana-specific compute
 unit table and it confirms the values already in `pricing.json` exactly (standard 10, sendTransaction /
@@ -67,14 +82,23 @@ Standard call reference = `getAccountInfo`. DAS = Metaplex Digital Asset Standar
 
 ## Pending providers
 
-These providers were checked but excluded because per-method pricing is not publicly documented. Add them when the data becomes available.
+A provider is included if its published material prices **every** method — that can be a per-method
+weight table (Alchemy, Helius, QuickNode) or a documented flat rate (dRPC, OnFinality, Chainstack). It
+is excluded if any part of the method surface is unpriced, because a partial table invites the exact
+mistake this dataset exists to prevent: costing the calls that are published and assuming the rest
+follow. Add one when the data becomes available.
 
 | Provider | Status | What's missing | Where to check |
 |---|---|---|---|
 | GetBlock | Has CU model, $0.41/M CU (Pro tier) | CU weight per Solana method not documented | https://getblock.io/pricing/ |
 | Ankr | Flat $50/M all Solana, no differentiation | No per-method breakdown | https://www.ankr.com/rpc/pricing/ |
 | Shyft | Flat-rate RPS subscriptions, no per-call metering | No PAYG model currently | https://shyft.to/solana-rpc-grpc-pricing |
-| Syndica | Enterprise/contact-sales only | No public pricing page | https://syndica.io (has cost estimator) |
+| Syndica | Free tier published (10M req/mo, 100 RPS, 100 GB) | Paid tiers quoted per plan; no per-request or per-method rate | https://syndica.io/pricing |
+| RPC Fast | Standard Solana call = 1 CU, overage $5.00/M CU | No published weight for archive, history or DAS — a partial table | https://rpcfast.com/pricing |
+| Blockdaemon | 3M CU free, Starter $600/mo for 15M CU | No published per-method CU weights | https://www.blockdaemon.com/pricing |
+| Uniblock | Aggregation layer, not a node operator | Routes to upstream providers, so its cost is theirs plus margin; no per-method rate | https://uniblock.dev |
+
+Checked 2026-09-06: Syndica, RPC Fast, Blockdaemon, Uniblock. Checked 2026-05-14: GetBlock, Ankr, Shyft.
 
 ## Updating prices
 
