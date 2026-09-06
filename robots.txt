@@ -1,0 +1,6 @@
+# pricing.rpcplane.dev serves one machine-readable JSON file, plus a page
+# describing it. Both are crawlable and indexable.
+# The rate tables people read live on rpcplane.dev and docs.rpcplane.dev;
+# this host owns the dataset itself.
+User-agent: *
+Allow: /
